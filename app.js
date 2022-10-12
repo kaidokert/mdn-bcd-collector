@@ -139,12 +139,14 @@ app.post('/api/results', (req, res, next) => {
   let url;
   let results;
   try {
+    console.log("Parsing results ...");
     [url, results] = parseResults(req.query.for, req.body);
   } catch (e) {
     res.status(400).send(e.message);
     return;
   }
 
+  console.log(`Storing session: ${req.sessionID} url:${url}`); //results:${results}`);
   storage
     .put(req.sessionID, url, results)
     .then(() => {

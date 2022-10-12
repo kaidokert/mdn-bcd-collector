@@ -27,6 +27,7 @@ class CloudStorage {
     )}`;
     const file = this._bucket.file(name);
     const data = JSON.stringify(value);
+    console.log(`Trying to put name:${name} file:${file}`); // data:${data}`);
     await file.save(data);
   }
 

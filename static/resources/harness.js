@@ -902,6 +902,8 @@
       '/api/results?for=' +
       encodeURIComponent(location.href);
 
+    console.log(`======> Uploading to: ${resultsURL}`);
+
     client.open('POST', resultsURL);
     client.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     client.send(body);
