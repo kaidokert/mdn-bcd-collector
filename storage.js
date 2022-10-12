@@ -17,7 +17,7 @@ class CloudStorage {
     this._bucket = storage.bucket(bucketName);
     // appVersion is used as a prefix for all paths, so that multiple
     // deployments can use the same bucket without risk of collision.
-    this._version = appVersion;
+    this._version = appVersion.trim();
   }
 
   async put(sessionId, key, value) {

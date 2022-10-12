@@ -34,7 +34,7 @@ import {exec} from './scripts.js';
 const getAppVersion = async () => {
   const version = (
     await fs.readJson(new URL('./package.json', import.meta.url))
-  ).version;
+  ).version.trim();
   if (process.env.NODE_ENV === 'production') {
     return version;
   }
