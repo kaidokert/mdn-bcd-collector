@@ -72,7 +72,9 @@ const cookieSession = (req, res, next) => {
   if (!req.sessionID) {
     req.sessionID = uniqueString();
     res.cookie('sid', req.sessionID);
+    console.log(`----------------------> CREATED COOOKIE: Session ID: ${req.sessionID}`);
   }
+  console.log(`----------------------> READ COOOKIE: Session ID: ${req.sessionID}`);
   next();
 };
 
@@ -200,6 +202,7 @@ app.get('/download/:filename', (req, res, next) => {
 // instead simply navigates to /export.
 app.all('/export', (req, res, next) => {
   const github = !!req.body.github;
+  console.log(`exporting for SESSION:${req.sessionID}`);
   storage
     .getAll(req.sessionID)
     .then(async (results) => {
@@ -223,6 +226,7 @@ app.all('/export', (req, res, next) => {
         }
       } else {
         const {filename, buffer} = exporter.getReportMeta(report);
+        console.log(`app.js: saving file ${filename}`);
         await storage.saveFile(filename, buffer);
         res.render('export', {
           title: 'Exported for download',

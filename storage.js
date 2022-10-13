@@ -25,6 +25,7 @@ class CloudStorage {
     const name = `${this._version}/sessions/${sessionId}/${encodeURIComponent(
       key
     )}`;
+    console.log(`doing _bucket put ${name}`);
     const file = this._bucket.file(name);
     const data = JSON.stringify(value);
     console.log(`Trying to put name:${name} file:${file}`); // data:${data}`);
@@ -34,22 +35,26 @@ class CloudStorage {
   async getAll(sessionId) {
     assert(sessionId.length > 0);
     const prefix = `${this._version}/sessions/${sessionId}/`;
+    console.log(`getAll prefix: ${prefix}`);
     const files = (await this._bucket.getFiles({prefix}))[0];
     const result = {};
     await Promise.all(
       files.map(async (file) => {
         assert(file.name.startsWith(prefix));
+        console.log(`Parse file ${file.name}`);
         const key = decodeURIComponent(file.name.substr(prefix.length));
         const data = (await file.download())[0];
         result[key] = JSON.parse(data);
       })
     );
+    console.log(`Yielding result ${result}`);
     return result;
   }
 
   async saveFile(filename, data) {
     assert(!filename.includes('..'));
     const name = `${this._version}/files/${filename}`;
+    console.log(`doing saveFile _bucket put ${name}`);
     const file = this._bucket.file(name);
     await file.save(data);
   }
@@ -57,6 +62,7 @@ class CloudStorage {
   async readFile(filename) {
     assert(!filename.includes('..'));
     const name = `${this._version}/files/${filename}`;
+    console.log(`doing readFile _bucket put ${name}`);
     const file = this._bucket.file(name);
     return (await file.download())[0];
   }
@@ -78,7 +84,7 @@ class MemoryStorage {
 
   async getAll(sessionId) {
     const result = {};
-    const sessionData = this._data.get(sessionId);
+    const sessionData = this._data.get(sessionId).trim();
     if (sessionData) {
       for (const [key, value] of sessionData) {
         result[key] = value;

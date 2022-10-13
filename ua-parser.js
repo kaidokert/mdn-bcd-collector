@@ -22,6 +22,7 @@ const getMajorMinorVersion = (version) => {
 };
 
 const parseUA = (userAgent, browsers) => {
+  console.log(`Parsing UA: ${userAgent}`);
   const ua = uaParser(userAgent);
   const data = {
     browser: {id: null, name: null},
@@ -30,6 +31,11 @@ const parseUA = (userAgent, browsers) => {
     os: {name: null, version: null},
     inBcd: undefined
   };
+
+  console.log(`======> BROWSER ID <=========`);
+  const stfy = JSON.stringify(ua.browser);
+  console.log(`====> ua.browser.name: ${stfy}`);
+  console.log(`====> ua.browser.name: ${ua.browser.name}`);
 
   if (!ua.browser.name) {
     return data;
@@ -77,6 +83,14 @@ const parseUA = (userAgent, browsers) => {
 
   data.fullVersion = data.fullVersion || ua.browser.version;
   data.version = getMajorMinorVersion(data.fullVersion);
+
+  console.log(`======> BROWSER ID <=========`);
+  console.log(`====> data.browser.id: ${data.browser.id}`);
+  console.log(`====> data.browser.name: ${data.browser.name}`);
+  console.log(`====> data.os.name: ${data.os.name}`);
+  console.log(`====> data.os.version: ${data.os.version}`);
+  console.log(`====> data.fullVersion: ${data.fullVersion}`);
+  console.log(`====> data.version: ${data.version}`);
 
   if (!(data.browser.id in browsers)) {
     return data;
